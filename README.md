@@ -11,15 +11,17 @@ By analyzing various aspect of the sales data, i seek to identify:
 - How many months were targets met and
 - What are the Teams performance like over the given period.
 
-![Screenshot 2024-11-30 021304](https://github.com/user-attachments/assets/5cc48924-6284-40c6-bcac-90c5b4296e3a)
+![Screenshot 2025-02-14 131719](https://github.com/user-attachments/assets/4efb4969-cc35-4a00-bd69-1a221677769d)
+
 
 ## Data Sources
-Finance Data: The primary dataset used for this analysis comes in an Excel file, containing 4 different tables of information made by the company. [Download here](https://mavenanalytics.io/data-Playground?order=date_added%2Cdesc&search=coff)
+Finance Data: The primary dataset used for this analysis comes in an Excel file, containing 4 different tables of information made by the company.
+[Finance Analysis.xlsx](https://github.com/user-attachments/files/18799151/Finance.Analysis.xlsx)
+
 
 ## Analysis Tools Used
 - Microsoft Excel
 - Power Query
-- Power Pivot
 - Power BI for Visualization
 
 ## Data Cleaning and Preparation
@@ -39,40 +41,67 @@ EDA involves exploring the Financial Dataset to answer key questions, such as:
 - Which Salesperson meant most targets?
 - What are the variance trend within the given period?
 
-![Screenshot 2024-11-30 021828](https://github.com/user-attachments/assets/540bcd33-3fdc-48a5-ba33-ed9123b8668a)
-![Screenshot 2024-11-30 021649](https://github.com/user-attachments/assets/2a9148a2-fbc7-4b9f-96e6-c45ab3ce9640)
-![Screenshot 2024-11-30 021624](https://github.com/user-attachments/assets/28766736-4707-4d85-a77f-c66b38b29ee2)
-![Screenshot 2024-11-30 021602](https://github.com/user-attachments/assets/50196260-2cf2-4649-a542-6a8227095862)
-![Screenshot 2024-11-30 021440](https://github.com/user-attachments/assets/21b02add-8190-405f-bc34-906ca29833c2)
-![Screenshot 2024-11-30 021927](https://github.com/user-attachments/assets/ed14e657-2407-4793-9bac-a507f5f415eb)
+![Screenshot 2025-02-14 132013](https://github.com/user-attachments/assets/48aba2fe-309f-440e-80bf-55df9dd30acd)
 
+![Screenshot 2025-02-14 132256](https://github.com/user-attachments/assets/a9f2a99b-25e6-4fb3-abdc-cd64c348e462)
 
 ## Data Analysis
-Power Pivot was used for creating some measures using DAX Funcions. Some of the measures used for these analysis include:
+Power BI was used for creating some measures using DAX Funcions. Some of the measures used for these analysis include:
 ``` Sql
-Total orders = COUNT('Data Cleaning & transformation'[transaction_id])
+Month Targets Reached = 
+    VAR month_with_target_reached = FILTER(ALL('Calendar'), [Variance]>0)
+RETURN
+    COUNTROWS(month_with_target_reached)
 ```
 ``` Sql
-Total Sales = SUM('Data Cleaning & transformation'[Total Bills])
+Target status = IF([Variance]>0, 1, -1)
 ```
 ``` Sql
-Avg Order per person = DIVIDE([Total Qty],[Total orders],0)
+Trend chart title = 
+    VAR month_count = COUNTROWS('Calendar')
+RETURN
+" We met targets for " & [Month Targets Reached] & " out of " & month_count 
 ```
 ``` Sql
-Avg Sale per Person = DIVIDE([Total Sales],[Total orders],0)
+YTD sales actual = CALCULATE([Total sales actual],DATESYTD('Calendar'[Date]))
+```
+``` Sql
+Variance percentage Label = 
+    VAR up = "🟢"
+    VAR down = "🔴"
+    VAR formatted_var_percentage = FORMAT(ABS([Variance %]), "0.0%")
+RETURN
+formatted_var_percentage & " " & IF([Variance %]>0, up, down)
 ```
 
 ## Findings
  The analysis results are summarized as follows:
 1. Target were only met for 2 months out of the 14 months of the given period.
 2. The largest positive variance was 5.5% in March, while other months were below targets.
-3. Several months had a negative variance, with sales lagging behind projections.
-4. The Yummies Team met most of the targets.
-5. Only 11 salesperson met their targets.
+3. The variance percentages indicate that top performers exceeded targets by up to 9%, while others had smaller margins.
+4. Several months had a negative variance, with sales lagging behind projections.
+5. The Yummies Team met most of the targets.
+6. Only 11 salesperson met their targets.
 
 ## Recommendations
 Based on the analysis conducted, i recommend the following:
-- There should be a Shift scheduling strategy of sales rep being targeted on fridays to ensure smooth and timely order processing and better customer experiences.
-- To ensure a balanced customer to sales representative ratio, more sales reps should be placed between 8am and 9am daily on the selling floor.
-- Promotions and Marketing campaigns should be targeted on Coffee Product category.
-- Regular and Large Sizes should be priotized durin
+### **Actionable Recommendations to Improve Performance:**
+1. **Improve Sales Team Efficiency:**
+   - Identify underperforming salespeople and provide targeted coaching or incentives.
+   - Replicate the strategies of top performers to boost overall sales efficiency.
+
+2. **Adjust Sales Targets Based on Trends:**
+   - Since only 2 out of 14 months met targets, consider revising targets to be more realistic.
+   - Introduce quarterly adjustments to reflect market conditions better.
+
+3. **Increase Sales in Low-Performing Months:**
+   - Identify why sales dipped in certain months (e.g., seasonality, external factors).
+   - Implement promotions, discounts, or marketing pushes during historically weak months.
+
+4. **Customer Engagement and Retention:**
+   - Strengthen relationships with high-value customers through loyalty programs.
+   - Offer personalized discounts or deals to repeat buyers.
+
+5. **Optimize Product/Service Offerings:**
+   - Analyze which products or services contributed most to missed targets.
+   - Focus marketing efforts on high-margin or high-demand products.
