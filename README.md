@@ -65,8 +65,10 @@ Avg Sale per Person = DIVIDE([Total Sales],[Total orders],0)
 ## Findings
  The analysis results are summarized as follows:
 1. Target were only met for 2 months out of the 14 months of the given period.
-2. The Yummies Team met most of the targets.
-3. 11 salesperson met their targets.
+2. The largest positive variance was 5.5% in March, while other months were below targets.
+3. Several months had a negative variance, with sales lagging behind projections.
+4. The Yummies Team met most of the targets.
+5. Only 11 salesperson met their targets.
 
 ## Recommendations
 Based on the analysis conducted, i recommend the following:
